@@ -1,0 +1,126 @@
+{
+    "properties": {
+      "connectionParameters": {
+        "api_key": {
+          "type": "securestring",
+          "uiDefinition": {
+            "displayName": "Authorization",
+            "description": "The Authorization for this api",
+            "tooltip": "Provide your Authorization",
+            "constraints": {
+              "tabIndex": 2,
+              "clearText": false,
+              "required": "true"
+            }
+          }
+        },
+        "service_plan_id": {
+          "type": "string",
+          "uiDefinition": {
+            "constraints": {
+              "required": "true"
+            },
+            "displayName": "Service Plan Id",
+            "description": "The Service Plan Id",
+            "tooltip": "Provide the service plan Id"
+          }
+        },
+        "project_id": {
+          "type": "string",
+          "uiDefinition": {
+            "constraints": {
+              "required": "true"
+            },
+            "displayName": "Project Id",
+            "description": "The Project Id",
+            "tooltip": "Provide the Project Id"
+          }
+        },
+        "key_id": {
+          "type": "string",
+          "uiDefinition": {
+            "constraints": {
+              "required": "true"
+            },
+            "displayName": "Key ID",
+            "description": "Your Sinch Key ID",
+            "tooltip": "Provide the Key ID"
+          }
+        },
+        "key_secret": {
+          "type": "string",
+          "uiDefinition": {
+            "constraints": {
+              "required": "true"
+            },
+            "displayName": "Key Secret",
+            "description": "Your Sinch Key Secret",
+            "tooltip": "Provide the Key Secret"
+          }
+        }
+      },
+      "iconBrandColor": "#ffbe3c",
+      "scriptOperations": [],
+      "capabilities": [],
+      "policyTemplateInstances": [
+        {
+          "templateId": "dynamichosturl",
+          "title": "Change ListNumbers Endpoint",
+          "parameters": {
+            "x-ms-apimTemplateParameter.urlTemplate": "https://numbers.api.sinch.com",
+            "x-ms-apimTemplate-operationName": [
+              "ListNumbers",
+              "ListRegions"
+            ]
+          }
+        },
+        {
+          "templateId": "setheader",
+          "title": "Add basic authorization to ListNumbers header",
+          "parameters": {
+            "x-ms-apimTemplateParameter.name": "Authorization",
+            "x-ms-apimTemplateParameter.value": "Basic @connectionParameters('key_id'):@connectionParameters('key_secret')",
+            "x-ms-apimTemplateParameter.existsAction": "override",
+            "x-ms-apimTemplate-policySection": "Request",
+            "x-ms-apimTemplate-operationName": [
+              "ListNumbers",
+              "ListRegions"
+            ]
+          }
+        },
+        {
+          "templateId": "setqueryparameter",
+          "title": "Set Project ID To Query",
+          "parameters": {
+            "x-ms-apimTemplateParameter.name": "projectId",
+            "x-ms-apimTemplateParameter.value": "@connectionParameters('project_id')",
+            "x-ms-apimTemplateParameter.existsAction": "skip"
+          }
+        },
+        {
+          "templateId": "setqueryparameter",
+          "title": "Set Service Plan ID",
+          "parameters": {
+            "x-ms-apimTemplateParameter.name": "servicePlanId",
+            "x-ms-apimTemplateParameter.value": "@connectionParameters('service_plan_id')",
+            "x-ms-apimTemplateParameter.existsAction": "skip"
+          }
+        },
+        {
+          "templateId": "pollingtrigger",
+          "title": "PollingTriggerPolicy_c6f07e23-c135-f6ca-c70d-611b9443fd8d",
+          "type": "PollingTrigger",
+          "parameters": {
+            "x-ms-apimTemplateParameter.triggerConfig": {
+              "start_date": "@{triggerBody().inbounds[0].received_at}"
+            },
+            "x-ms-apimTemplateParameter.triggerDataPath": "@triggerBody().inbounds",
+            "x-ms-apimTemplate-operationName": [
+              "NewSMS"
+            ]
+          }
+        }
+      ],
+      "publisher": "Hammersmark Aandal, Erik"
+    }
+  }

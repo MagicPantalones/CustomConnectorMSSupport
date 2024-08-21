@@ -1,0 +1,495 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Sinch",
+      "description": "Connector used for operating with Sinch",
+      "version": "1.0"
+    },
+    "host": "eu.sms.api.sinch.com",
+    "basePath": "/",
+    "schemes": [
+      "https"
+    ],
+    "consumes": [],
+    "produces": [],
+    "paths": {
+      "/xms/v1/{service_plan_id}/batches": {
+        "post": {
+          "responses": {
+            "default": {
+              "description": "default",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "id",
+                    "title": "Message Id",
+                    "x-ms-visibility": "important"
+                  },
+                  "to": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "title": "To"
+                    },
+                    "description": "to"
+                  },
+                  "from": {
+                    "type": "string",
+                    "description": "from"
+                  },
+                  "canceled": {
+                    "type": "string",
+                    "description": "canceled",
+                    "title": "Canceled",
+                    "enum": [
+                      "",
+                      "true",
+                      "false"
+                    ],
+                    "x-ms-visibility": "advanced"
+                  },
+                  "body": {
+                    "type": "string",
+                    "description": "body",
+                    "title": "Message",
+                    "x-ms-visibility": "advanced"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "type"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "description": "created_at",
+                    "title": "Created At",
+                    "format": "date-time"
+                  },
+                  "modified_at": {
+                    "type": "string",
+                    "description": "modified_at",
+                    "title": "Modified At",
+                    "format": "date-time",
+                    "x-ms-visibility": "important"
+                  },
+                  "delivery_report": {
+                    "type": "string",
+                    "description": "delivery_report"
+                  },
+                  "send_at": {
+                    "type": "string",
+                    "description": "send_at",
+                    "title": "Send At",
+                    "format": "date-time",
+                    "x-ms-visibility": "important"
+                  },
+                  "expire_at": {
+                    "type": "string",
+                    "description": "expire_at",
+                    "title": "Expire At",
+                    "format": "date-time",
+                    "x-ms-visibility": "important"
+                  },
+                  "client_reference": {
+                    "type": "string",
+                    "description": "client_reference",
+                    "title": "Client Reference",
+                    "x-ms-visibility": "advanced"
+                  }
+                }
+              }
+            }
+          },
+          "summary": "Send SMS",
+          "operationId": "SendSMS",
+          "description": "Send a message or a batch of messages.",
+          "parameters": [
+            {
+              "name": "service_plan_id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "default": "my_service_plan_id",
+              "x-ms-visibility": "internal"
+            },
+            {
+              "name": "body",
+              "in": "body",
+              "required": false,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "description": "from",
+                    "title": "From Number",
+                    "x-ms-visibility": "important",
+                    "x-ms-dynamic-values": {
+                      "operationId": "ListNumbers",
+                      "value-path": "phoneNumber",
+                      "value-collection": "activeNumbers",
+                      "value-title": "phoneNumber",
+                      "parameters": {
+                        "projectId": "my_project_id"
+                      }
+                    }
+                  },
+                  "to": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "to",
+                      "title": "To",
+                      "x-ms-visibility": "important"
+                    },
+                    "description": "to"
+                  },
+                  "body": {
+                    "type": "string",
+                    "description": "body",
+                    "title": "Message",
+                    "x-ms-visibility": "important"
+                  },
+                  "delivery_report": {
+                    "type": "string",
+                    "description": "delivery_report",
+                    "title": "Delivery Report",
+                    "default": "none",
+                    "x-ms-visibility": "internal"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "type",
+                    "title": "Type",
+                    "default": "mt_text",
+                    "x-ms-visibility": "internal"
+                  },
+                  "client_reference": {
+                    "type": "string",
+                    "description": "client_reference",
+                    "title": "Client Reference",
+                    "x-ms-visibility": "advanced"
+                  },
+                  "send_at": {
+                    "type": "string",
+                    "description": "send_at",
+                    "title": "Send At",
+                    "x-ms-visibility": "advanced"
+                  }
+                },
+                "required": [
+                  "body",
+                  "type",
+                  "delivery_report",
+                  "from",
+                  "to"
+                ]
+              }
+            }
+          ],
+          "x-ms-visibility": "important"
+        }
+      },
+      "/v1/projects/{projectId}/activeNumbers": {
+        "get": {
+          "responses": {
+            "default": {
+              "description": "default",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "activeNumbers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "phoneNumber": {
+                          "type": "string",
+                          "description": "phoneNumber",
+                          "title": "Phone number",
+                          "x-ms-visibility": "internal"
+                        },
+                        "projectId": {
+                          "type": "string",
+                          "description": "projectId"
+                        },
+                        "displayName": {
+                          "type": "string",
+                          "description": "displayName"
+                        },
+                        "regionCode": {
+                          "type": "string",
+                          "description": "regionCode"
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "type"
+                        },
+                        "capability": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "capability"
+                        },
+                        "money": {
+                          "type": "object",
+                          "properties": {
+                            "currencyCode": {
+                              "type": "string",
+                              "description": "currencyCode"
+                            },
+                            "amount": {
+                              "type": "string",
+                              "description": "amount"
+                            }
+                          },
+                          "description": "money"
+                        },
+                        "paymentIntervalMonths": {
+                          "type": "integer",
+                          "format": "int32",
+                          "description": "paymentIntervalMonths"
+                        },
+                        "nextChargeDate": {
+                          "type": "string",
+                          "description": "nextChargeDate"
+                        },
+                        "expireAt": {
+                          "type": "string",
+                          "description": "expireAt"
+                        },
+                        "callbackUrl": {
+                          "type": "string",
+                          "description": "callbackUrl"
+                        }
+                      }
+                    },
+                    "description": "activeNumbers"
+                  },
+                  "nextPageToken": {
+                    "type": "string",
+                    "description": "nextPageToken"
+                  },
+                  "totalSize": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "totalSize"
+                  }
+                }
+              }
+            }
+          },
+          "summary": "List Phonenumbers",
+          "operationId": "ListNumbers",
+          "x-ms-visibility": "important",
+          "parameters": [
+            {
+              "name": "projectId",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "default": "my_project_id",
+              "description": "Project id",
+              "x-ms-summary": "ProjectId"
+            }
+          ],
+          "description": "List Numbers In Project"
+        }
+      },
+      "/v1/projects/{projectId}/availableRegions": {
+        "get": {
+          "responses": {
+            "default": {
+              "description": "default",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "availableRegions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "regionCode": {
+                          "type": "string",
+                          "description": "regionCode"
+                        },
+                        "regionName": {
+                          "type": "string",
+                          "description": "regionName"
+                        },
+                        "types": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "types"
+                        }
+                      }
+                    },
+                    "description": "availableRegions"
+                  }
+                }
+              }
+            }
+          },
+          "summary": "List Region Codes",
+          "description": "Lists region codes",
+          "operationId": "ListRegions",
+          "parameters": [
+            {
+              "name": "projectId",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "default": "my_project_id"
+            }
+          ],
+          "x-ms-visibility": "internal"
+        }
+      },
+      "/trigger/xms/v1/{my_service_plan_id}/inbounds": {
+        "get": {
+          "responses": {
+            "default": {
+              "description": "default",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "count"
+                  },
+                  "page": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "page"
+                  },
+                  "inbounds": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "body": {
+                          "type": "string",
+                          "description": "body"
+                        },
+                        "from": {
+                          "type": "string",
+                          "description": "from"
+                        },
+                        "id": {
+                          "type": "string",
+                          "description": "id"
+                        },
+                        "received_at": {
+                          "type": "string",
+                          "description": "received_at"
+                        },
+                        "to": {
+                          "type": "string",
+                          "description": "to"
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "type"
+                        }
+                      }
+                    },
+                    "description": "inbounds"
+                  },
+                  "page_size": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "page_size"
+                  },
+                  "start_date": {
+                    "type": "string",
+                    "description": "start_date"
+                  },
+                  "debugurl": {
+                    "type": "string",
+                    "description": "debugurl"
+                  },
+                  "originalRequest": {
+                    "type": "string",
+                    "description": "originalRequest"
+                  }
+                }
+              }
+            }
+          },
+          "summary": "When a new SMS is received",
+          "description": "Triggers when a new SMS is received to the specified number",
+          "operationId": "NewSMS",
+          "x-ms-visibility": "important",
+          "x-ms-trigger": "batch",
+          "x-ms-trigger-metadata": {
+            "mode": "polling",
+            "kind": "query"
+          },
+          "parameters": [
+            {
+              "name": "my_service_plan_id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "default": "my_service_plan_id",
+              "x-ms-visibility": "internal",
+              "description": "my_service_plan_id",
+              "x-ms-summary": "my_service_plan_id"
+            },
+            {
+              "name": "to",
+              "in": "query",
+              "required": true,
+              "type": "string",
+              "x-ms-visibility": "important",
+              "x-ms-dynamic-values": {
+                "operationId": "ListNumbers",
+                "value-path": "phoneNumber",
+                "value-collection": "activeNumbers",
+                "value-title": "phoneNumber",
+                "parameters": {
+                  "projectId": "my_project_id"
+                }
+              }
+            },
+            {
+              "name": "page_size",
+              "in": "query",
+              "required": true,
+              "type": "integer",
+              "default": 100,
+              "x-ms-visibility": "internal"
+            },
+            {
+              "name": "start_date",
+              "in": "query",
+              "required": false,
+              "type": "string",
+              "x-ms-visibility": "internal"
+            }
+          ]
+        }
+      }
+    },
+    "definitions": {},
+    "parameters": {},
+    "responses": {},
+    "securityDefinitions": {
+      "Authorization": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    },
+    "security": [
+      {
+        "Authorization": []
+      }
+    ],
+    "tags": []
+  }
